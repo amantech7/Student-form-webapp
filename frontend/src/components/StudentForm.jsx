@@ -30,25 +30,52 @@ export default function StudentForm({ onRegister, count }) {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-     
 
-    // Generate avatar URL
-    const seed = firstName + lastName + (file?.name || "");
-    const avatar = `https://api.dicebear.com/7.x/identicon/svg?seed=${seed}`;
+    const formData = new FormData();
+    formData.append("first_name", firstName);
+    formData.append("middle_name", middleName);
+    formData.append("last_name", lastName);
+    formData.append("dob", dob);
+    formData.append("phone", phone);
+    formData.append("course", course);
+    if (file) formData.append("photo", file);
 
-    onRegister({ firstName, middleName, lastName, dob, phone, course, avatar });
+    try {
+      const res = await fetch("http://localhost:5000/api/students/register", {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      if (!data.success) {
+        alert(data.message || "Registration failed");
+        return;
+      }
 
-    setFirstName("");
-    setMiddleName("");
-    setLastName("");
-    setDob("");
+      const s = data.data; // {id, first_name, ...}
+      onRegister({
+        firstName: s.first_name,
+        middleName: s.middle_name,
+        lastName: s.last_name,
+        dob: s.dob,
+        phone: s.phone,
+        course: s.course,
+        avatar: s.avatar_url
+      });
 
-    setPhone("");
-    setCourse("");
-    setFile(null);
+      setFirstName("");
+      setMiddleName("");
+      setLastName("");
+      setDob("");
+      setPhone("");
+      setCourse("");
+      setFile(null);
+    } catch (err) {
+      console.error(err);
+      alert("Could not connect to server");
+    }
   };
 
   return (
