@@ -1,64 +1,81 @@
 import { useState, useEffect } from "react";
 import StudentForm from "./components/StudentForm";
+import StudentList from "./components/StudentList";
+import { fetchStudents } from "./services/studentService";
 
 export default function App() {
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    async function loadStudents() {
-      try {
-        const response = await fetch("http://localhost:5000/api/students");
-        const result = await response.json();
-
-        if (result.success) {
-          // convert DB columns → frontend names
-          const formatted = result.data.map((student) => ({
-            id: student.id,
-            firstName: student.first_name,
-            middleName: student.middle_name,
-            lastName: student.last_name,
-            dob: student.dob,
-            phone: student.phone,
-            course: student.course,
-            avatar: student.avatar_url,
-          }));
-
-          setStudents(formatted);
-        }
-      } catch (error) {
-        console.error("Failed to load students:", error);
-      }
-    }
-
     loadStudents();
   }, []);
 
+  async function loadStudents() {
+    try {
+      const result = await fetchStudents();
+
+      if (result.success) {
+        const formatted = result.data.map((s) => ({
+          id: s.id,
+          firstName: s.first_name,
+          middleName: s.middle_name,
+          lastName: s.last_name,
+          dob: s.dob,
+          phone: s.phone,
+          course: s.course,
+          avatar: s.avatar_url,
+        }));
+
+        setStudents(formatted);
+      }
+    } catch (err) {
+      console.error("Failed to load students:", err);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
+      
 
-      <StudentForm 
-        count={students.length}
-        onRegister={(newStudent) => setStudents([newStudent, ...students])}
-      />
+      <header className="mb-6">
+        <h1 className="text-3xl font-bold">Student Portal</h1>
+        <p className="text-gray-500">Manage and track student registrations</p>
+      </header>
 
-      {students.length > 0 && (
-        <div className="max-w-xl mx-auto mt-6 space-y-3">
-          {students.map((st) => (
-            <div key={st.id} className="flex items-center gap-3 bg-white p-3 rounded shadow">
-              <img src={st.avatar} alt="" className="w-14 h-14 rounded-full border" />
-              <div>
-                <p className="font-bold">
-                  {st.firstName} {st.middleName} {st.lastName}
-                </p>
-                <p>DOB: {st.dob}</p>
-                <p>Phone: {st.phone}</p>
-                <p>Course: {st.course}</p>
-              </div>
-            </div>
-          ))}
+      <div className="grid lg:grid-cols-3 gap-6">
+        
+       
+        <div className="lg:col-span-1">
+          <StudentForm
+            count={students.length}
+            onRegister={(newStudent) =>
+              setStudents([{ id: Date.now(), ...newStudent }, ...students])
+            }
+          />
         </div>
-      )}
 
+        {/* RIGHT: STATS + LIST */}
+        <div className="lg:col-span-2 space-y-6">
+          
+          {/* TOTAL STUDENTS CARD */}
+          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-6 shadow-lg flex items-center justify-between">
+            <div>
+              <p className="text-sm opacity-90">Total Students</p>
+              <p className="text-4xl font-semibold">{students.length}</p>
+              <p className="text-xs opacity-80 mt-1">All registered students</p>
+            </div>
+            <div className="bg-white/20 p-3 rounded-full">🎓</div>
+          </div>
+
+          
+          <div className="bg-white rounded-xl p-6 shadow">
+            <h2 className="text-xl font-semibold mb-4">All Students</h2>
+
+            <StudentList students={students} />
+          </div>
+
+        </div>
+      </div>
     </div>
   );
 }

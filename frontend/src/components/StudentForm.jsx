@@ -1,8 +1,7 @@
 import { useState } from "react";
 
 export default function StudentForm({ onRegister, count }) {
-
-//  variables to hold form data
+  //  variables to hold form data
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -46,7 +45,7 @@ export default function StudentForm({ onRegister, count }) {
     try {
       const res = await fetch("http://localhost:5000/api/students/register", {
         method: "POST",
-        body: formData
+        body: formData,
       });
       const data = await res.json();
       if (!data.success) {
@@ -79,13 +78,18 @@ export default function StudentForm({ onRegister, count }) {
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-white rounded-xl shadow-lg border p-8">
-      <h2 className="text-2xl font-semibold text-center mb-6">
-        Student Signup Form
-      </h2>
+    <div className="bg-white rounded-xl shadow-lg border p-6">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="bg-indigo-100 text-indigo-700 p-2 rounded-full">🎓</div>
+        <div>
+          <h2 className="text-xl font-semibold">Register New Student</h2>
+          <p className="text-sm text-gray-500">
+            Fill in the details to add a new student
+          </p>
+        </div>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-3">
-        
         <div>
           <label className="font-medium">First Name*</label>
           <input
@@ -153,8 +157,7 @@ export default function StudentForm({ onRegister, count }) {
           </select>
         </div>
 
-        
-  {/* File upload section */}
+        {/* File upload section */}
         <div>
           <label className="font-medium">Upload Profile</label>
           <input
@@ -165,14 +168,10 @@ export default function StudentForm({ onRegister, count }) {
           />
         </div>
 
-        <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-          Register Student
+        <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2 rounded hover:opacity-95">
+          <span className="inline-block mr-2">➕</span> Register Student
         </button>
       </form>
-
-      <p className="text-center font-semibold mt-4">
-        Total Registered Students: {count}
-      </p>
     </div>
   );
 }
