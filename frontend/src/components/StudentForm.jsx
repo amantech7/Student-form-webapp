@@ -53,16 +53,8 @@ export default function StudentForm({ onRegister, count }) {
         return;
       }
 
-      const s = data.data; // {id, first_name, ...}
-      onRegister({
-        firstName: s.first_name,
-        middleName: s.middle_name,
-        lastName: s.last_name,
-        dob: s.dob,
-        phone: s.phone,
-        course: s.course,
-        avatar: s.avatar_url
-      });
+      // Refresh list after successful registration
+      onRegister?.();
 
       setFirstName("");
       setMiddleName("");

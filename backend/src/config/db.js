@@ -1,20 +1,20 @@
+import mysql from "mysql2";
 import dotenv from "dotenv";
 dotenv.config();
-
-import mysql from "mysql2";
 
 const HOST = process.env.DB_HOST || "localhost";
 const USER = process.env.DB_USER || "root";
 const PASSWORD = process.env.DB_PASSWORD || "";
-const DB_NAME = process.env.DB_NAME || "student_db";
+const DB_NAME = process.env.DB_NAME || "studentdb";
 
 console.log("DB CONFIG:", { host: HOST, user: USER, database: DB_NAME });
 
-// initial connection to server to make sure database exists
 const db = mysql.createConnection({
   host: HOST,
   user: USER,
   password: PASSWORD,
+  database: DB_NAME,
+  charset: "binary" 
 });
 
 db.connect((err) => {
@@ -24,41 +24,56 @@ db.connect((err) => {
   }
   console.log("Connected to MySQL server");
 
-  // create database if not exists and then create students table
-  db.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;`, (err) => {
+
+  // Ensure database and table exist
+  const createTableSql = `
+    CREATE TABLE IF NOT EXISTS students (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      first_name VARCHAR(255),
+      middle_name VARCHAR(255),
+      last_name VARCHAR(255),
+      dob DATE,
+      phone VARCHAR(20),
+      course VARCHAR(100),
+      avatar_url MEDIUMBLOB,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `;
+
+  db.query(createTableSql, (err) => {
     if (err) {
-      console.log("Error creating database:", err);
-      return;
-    }
+      console.log("Error creating students table:", err);
+    } else {
+      console.log("Database and students table are ready");
+      
+      // Migrate existing avatar_url column from TEXT to MEDIUMBLOB if needed
+      db.query(
+        `SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS 
+         WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'students' AND COLUMN_NAME = 'avatar_url'`,
+        [DB_NAME],
+        (err, results) => {
+          if (!err && results.length > 0) {
+            const rawType = results[0].COLUMN_TYPE;
+            const columnType = Buffer.isBuffer(rawType)
+              ? rawType.toString("utf8").toLowerCase()
+              : String(rawType).toLowerCase();
 
-    db.changeUser({ database: DB_NAME }, (err) => {
-      if (err) {
-        console.log("Error switching database:", err);
-        return;
-      }
-
-      const createTableSql = `
-        CREATE TABLE IF NOT EXISTS students (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          first_name VARCHAR(255),
-          middle_name VARCHAR(255),
-          last_name VARCHAR(255),
-          dob DATE,
-          phone VARCHAR(20),
-          course VARCHAR(100),
-          avatar_url VARCHAR(255),
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-      `;
-
-      db.query(createTableSql, (err) => {
-        if (err) {
-          console.log("Error creating students table:", err);
-        } else {
-          console.log("Database and students table are ready");
+            if (columnType.includes("text") || columnType.includes("varchar")) {
+              db.query(
+                `ALTER TABLE students MODIFY COLUMN avatar_url MEDIUMBLOB`,
+                (alterErr) => {
+                  if (alterErr) {
+                    console.log("Migration warning (column may already be BLOB):", alterErr.message);
+                  } else {
+                    console.log("Migrated avatar_url column to MEDIUMBLOB");
+                  }
+                }
+              );
+            }
+          }
         }
-      });
-    });
+      );
+    }
   });
 });
 

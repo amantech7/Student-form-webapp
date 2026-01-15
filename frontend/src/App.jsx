@@ -11,31 +11,17 @@ export default function App() {
   }, []);
 
   async function loadStudents() {
-    try {
-      const result = await fetchStudents();
-
-      if (result.success) {
-        const formatted = result.data.map((s) => ({
-          id: s.id,
-          firstName: s.first_name,
-          middleName: s.middle_name,
-          lastName: s.last_name,
-          dob: s.dob,
-          phone: s.phone,
-          course: s.course,
-          avatar: s.avatar_url,
-        }));
-
-        setStudents(formatted);
-      }
-    } catch (err) {
-      console.error("Failed to load students:", err);
-    }
+  try {
+    const data = await fetchStudents();
+    setStudents(data);
+  } catch (err) {
+    console.error(err);
   }
+}
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      
 
       <header className="mb-6">
         <h1 className="text-3xl font-bold">Student Portal</h1>
@@ -43,21 +29,19 @@ export default function App() {
       </header>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        
-       
+
+        {/* LEFT FORM */}
         <div className="lg:col-span-1">
           <StudentForm
             count={students.length}
-            onRegister={(newStudent) =>
-              setStudents([{ id: Date.now(), ...newStudent }, ...students])
-            }
+            onRegister={loadStudents} 
           />
         </div>
 
-        {/* RIGHT: STATS + LIST */}
+        {/* RIGHT UI */}
         <div className="lg:col-span-2 space-y-6">
-          
-          {/* TOTAL STUDENTS CARD */}
+
+          {/* STATS CARD */}
           <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-6 shadow-lg flex items-center justify-between">
             <div>
               <p className="text-sm opacity-90">Total Students</p>
@@ -67,13 +51,11 @@ export default function App() {
             <div className="bg-white/20 p-3 rounded-full">🎓</div>
           </div>
 
-          
+          {/* LIST */}
           <div className="bg-white rounded-xl p-6 shadow">
             <h2 className="text-xl font-semibold mb-4">All Students</h2>
-
             <StudentList students={students} />
           </div>
-
         </div>
       </div>
     </div>
