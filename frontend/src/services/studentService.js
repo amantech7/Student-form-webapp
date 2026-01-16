@@ -17,3 +17,23 @@ export async function fetchStudents() {
     createdAt: s.created_at,
   }));
 }
+
+export async function fetchStudentById(id) {
+  const res = await fetch(`http://localhost:5000/api/students/${id}`);
+  const json = await res.json();
+  if (!res.ok || json?.success === false) {
+    throw new Error(json?.message || "Failed to fetch student");
+  }
+  const s = json.data;
+  return {
+    id: s.id,
+    firstName: s.first_name,
+    middleName: s.middle_name,
+    lastName: s.last_name,
+    dob: s.dob,
+    phone: s.phone,
+    course: s.course,
+    avatar: s.avatar_url,
+    createdAt: s.created_at,
+  };
+}

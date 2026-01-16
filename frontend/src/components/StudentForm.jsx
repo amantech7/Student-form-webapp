@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-export default function StudentForm({ onRegister, count }) {
-  //  variables to hold form data
+export default function StudentForm({ onRegister }) {
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -15,16 +14,16 @@ export default function StudentForm({ onRegister, count }) {
       alert("First & Last Name Required");
       return false;
     }
-    if (isNaN(phone) || phone.length !== 10) {
-      alert("Enter 10-digit Phone Number");
+    if (phone && (isNaN(phone) || phone.length !== 10)) {
+      alert("Enter valid 10-digit Phone Number");
       return false;
     }
-
-    // DOB validation
-    const birth = new Date(dob);
-    if (birth > new Date()) {
-      alert("Invalid DOB: Cannot be future");
-      return false;
+    if (dob) {
+      const birth = new Date(dob);
+      if (birth > new Date()) {
+        alert("Invalid DOB: Cannot be in the future");
+        return false;
+      }
     }
     return true;
   };
@@ -52,10 +51,8 @@ export default function StudentForm({ onRegister, count }) {
         alert(data.message || "Registration failed");
         return;
       }
-
-      // Refresh list after successful registration
       onRegister?.();
-
+      // Reset form
       setFirstName("");
       setMiddleName("");
       setLastName("");
@@ -70,100 +67,118 @@ export default function StudentForm({ onRegister, count }) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border p-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="bg-indigo-100 text-indigo-700 p-2 rounded-full">🎓</div>
-        <div>
-          <h2 className="text-xl font-semibold">Register New Student</h2>
-          <p className="text-sm text-gray-500">
-            Fill in the details to add a new student
-          </p>
-        </div>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* First Name */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          First Name*
+        </label>
+        <input
+          type="text"
+          placeholder="Enter your First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+          required
+        />
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <div>
-          <label className="font-medium">First Name*</label>
-          <input
-            className="w-full border p-2 rounded"
-            placeholder="Enter your First Name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </div>
+      {/* Middle Name */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Middle Name
+        </label>
+        <input
+          type="text"
+          placeholder="Enter your Middle Name"
+          value={middleName}
+          onChange={(e) => setMiddleName(e.target.value)}
+          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+        />
+      </div>
 
-        <div>
-          <label className="font-medium">Middle Name</label>
-          <input
-            className="w-full border p-2 rounded"
-            placeholder="Enter your Middle Name"
-            value={middleName}
-            onChange={(e) => setMiddleName(e.target.value)}
-          />
-        </div>
+      {/* Last Name */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Last Name*
+        </label>
+        <input
+          type="text"
+          placeholder="Enter your Last Name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+          required
+        />
+      </div>
 
-        <div>
-          <label className="font-medium">Last Name*</label>
-          <input
-            className="w-full border p-2 rounded"
-            placeholder="Enter your Last Name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
+      {/* DOB */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Date of Birth
+        </label>
+        <input
+          type="date"
+          value={dob}
+          onChange={(e) => setDob(e.target.value)}
+          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+        />
+      </div>
 
-        <div>
-          <label className="font-medium">Date of Birth</label>
-          <input
-            type="date"
-            className="w-full border p-2 rounded"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-          />
-        </div>
+      {/* Phone */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Phone Number
+        </label>
+        <input
+          type="tel"
+          placeholder="Enter Phone Number"
+          maxLength={10}
+          value={phone}
+          onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+        />
+      </div>
 
-        <div>
-          <label className="font-medium">Phone Number</label>
-          <input
-            className="w-full border p-2 rounded"
-            placeholder="Enter Phone Number"
-            maxLength={10}
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
+      {/* Course */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Desired Course
+        </label>
+        <select
+          value={course}
+          onChange={(e) => setCourse(e.target.value)}
+          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white"
+        >
+          <option value="">-- Select Course --</option>
+          <option value="Computer Science">Computer Science</option>
+          <option value="Commerce">Commerce</option>
+          <option value="Medical">Medical</option>
+          <option value="Arts">Arts</option>
+          <option value="Diploma">Diploma</option>
+        </select>
+      </div>
 
-        <div>
-          <label className="font-medium">Desired Course</label>
-          <select
-            className="w-full border p-2 rounded"
-            value={course}
-            onChange={(e) => setCourse(e.target.value)}
-          >
-            <option>-- Select Course --</option>
-            <option>Computer Science</option>
-            <option>Commerce</option>
-            <option>Medical</option>
-            <option>Arts</option>
-            <option>Diploma</option>
-          </select>
-        </div>
+      {/* File Upload */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Upload Profile
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setFile(e.target.files[0])}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+        />
+      </div>
 
-        {/* File upload section */}
-        <div>
-          <label className="font-medium">Upload Profile</label>
-          <input
-            type="file"
-            accept="image/*"
-            className="w-full border p-2 rounded"
-            onChange={(e) => setFile(e.target.files[0])}
-          />
-        </div>
-
-        <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2 rounded hover:opacity-95">
-          <span className="inline-block mr-2">➕</span> Register Student
-        </button>
-      </form>
-    </div>
+      {/* Submit Button */}
+      <button
+        type="submit"
+        className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 rounded-lg font-medium hover:opacity-95 transition flex items-center justify-center gap-2 shadow-sm"
+      >
+        <span>➕</span> Register Student
+      </button>
+    </form>
   );
 }

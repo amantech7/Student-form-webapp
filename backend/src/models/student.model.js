@@ -29,3 +29,12 @@ export function getAllStudents(callback) {
 export function getStudentCount(callback) {
   db.query("SELECT COUNT(*) AS count FROM students", callback);
 }
+
+
+//function to get student by ID
+export const getStudentById = (id, callback) => {
+  const query = "SELECT * FROM students WHERE id = ?";
+  db.query(query, [id], (err, result) => {
+    callback(err, result);
+  });
+};

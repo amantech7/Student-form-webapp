@@ -2,16 +2,17 @@ import {
   insertStudent,
   getStudentCount,
   getAllStudents,
+  getStudentById, // Add this import to your model (see note below)
 } from "../models/student.model.js";
 import { success, failure } from "../utils/response.util.js";
-import  generateAvatar  from "../services/avatarServices.js";
+import generateAvatar from "../services/avatarServices.js";
 import axios from "axios";
 
 export const registerStudent = async (req, res) => {
   try {
     const { first_name, middle_name, last_name, dob, phone, course } = req.body;
 
-      // Generate DiceBear URL
+    // Generate DiceBear URL
     const seed = first_name + last_name + phone;
     const avatarUrl = generateAvatar(seed);
 
@@ -50,7 +51,6 @@ export const registerStudent = async (req, res) => {
 };
 
 // this will  Fetch total student count
-
 export const fetchStudentCount = (req, res) => {
   getStudentCount((err, result) => {
     if (err) return failure(res, "Failed to fetch count");
@@ -62,7 +62,6 @@ export const fetchStudents = (req, res) => {
   getAllStudents((err, results) => {
     if (err) return failure(res, "Failed to fetch students");
 
-   
     const toText = (v) => (Buffer.isBuffer(v) ? v.toString("utf8") : v);
     const blobToDataUrl = (buf) => {
       if (!Buffer.isBuffer(buf)) return null;
@@ -102,5 +101,56 @@ export const fetchStudents = (req, res) => {
     });
 
     return success(res, "Students fetched", formatted);
+  });
+};
+
+//  Fetch single student by ID
+export const fetchStudentById = (req, res) => {
+  const { id } = req.params;
+  getStudentById(id, (err, result) => {
+    if (err) return failure(res, "Failed to fetch student");
+
+    if (!result || result.length === 0) {
+      return failure(res, "Student not found", { id }, 404);
+    }
+
+    const s = result[0];
+
+    const toText = (v) => (Buffer.isBuffer(v) ? v.toString("utf8") : v);
+    const blobToDataUrl = (buf) => {
+      if (!Buffer.isBuffer(buf)) return null;
+
+      // Some older rows might contain SVG; detect and set the right MIME type.
+      const head = buf.subarray(0, 32).toString("utf8").trimStart();
+      const isSvg = head.startsWith("<svg") || head.startsWith("<?xml");
+      const mime = isSvg ? "image/svg+xml" : "image/png";
+
+      return `data:${mime};base64,${buf.toString("base64")}`;
+    };
+
+    const toYmd = (v) => {
+      if (!v) return null;
+      if (v instanceof Date) return v.toISOString().slice(0, 10);
+      if (typeof v === "string" && v.length >= 10) return v.slice(0, 10);
+      return String(v);
+    };
+
+    const avatar = s.avatar_url;
+    const avatar_url = Buffer.isBuffer(avatar)
+      ? blobToDataUrl(avatar)
+      : toText(avatar) ?? null;
+
+    const formatted = {
+      ...s,
+      first_name: toText(s.first_name),
+      middle_name: toText(s.middle_name),
+      last_name: toText(s.last_name),
+      phone: toText(s.phone),
+      course: toText(s.course),
+      dob: toYmd(s.dob),
+      avatar_url,
+    };
+
+    return success(res, "Student fetched", formatted);
   });
 };

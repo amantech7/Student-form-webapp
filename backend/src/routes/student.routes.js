@@ -4,6 +4,7 @@ import {
   registerStudent,
   fetchStudentCount,
   fetchStudents,
+  fetchStudentById,
 } from "../controllers/student.controller.js";
 
 const router = express.Router();
@@ -11,5 +12,7 @@ const router = express.Router();
 router.post("/register", upload.single("photo"), registerStudent);
 router.get("/count", fetchStudentCount);
 router.get("/", fetchStudents);
+
+router.get("/:id", fetchStudentById);
 
 export default router;
