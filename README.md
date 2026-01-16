@@ -1,10 +1,11 @@
 # **Student Portal Web App**
 
-A simple  web application that allows registering students and viewing their details in a dashboard.
+A simple web application that allows registering students and viewing their details in a dashboard.
 
 ---
 
 ## **Features**
+
 - Register new students with profile details
 - Upload a student profile image (avatar)
 - Shows total student count
@@ -16,6 +17,7 @@ A simple  web application that allows registering students and viewing their det
 ---
 
 ## **Technology Used**
+
 - **Frontend:** React + TailwindCSS
 - **Backend:** Node.js + Express.js
 - **Database:** MySQL
@@ -25,6 +27,7 @@ A simple  web application that allows registering students and viewing their det
 ---
 
 ## **How It Works**
+
 1. User fills the student form
 2. On submit:
    - Student data is saved in MySQL
@@ -36,6 +39,7 @@ A simple  web application that allows registering students and viewing their det
 ---
 
 ## **Student Card Shows**
+
 - Full Name
 - Course
 - Date of Birth
@@ -45,6 +49,7 @@ A simple  web application that allows registering students and viewing their det
 ---
 
 ## **Demo**
+
 https://github.com/user-attachments/assets/e9fce412-48b3-45ea-b436-9f31a92fc7ca
 
 ---
@@ -52,12 +57,14 @@ https://github.com/user-attachments/assets/e9fce412-48b3-45ea-b436-9f31a92fc7ca
 ## **How to Run This Project**
 
 ### **Clone the Repository**
+
 ```bash
 git clone https://github.com/amantech7/Student-form-webapp.git
 cd Student-form-webapp
 ```
 
 ### **Prerequisites**
+
 - Node.js (v14 or higher)
 - npm or yarn
 - MySQL Server
@@ -65,12 +72,14 @@ cd Student-form-webapp
 ### **Setup Instructions**
 
 #### **1. Install Backend Dependencies**
+
 ```bash
 cd backend
 npm install
 ```
 
 #### **2. Install Frontend Dependencies**
+
 ```bash
 cd frontend
 npm install
@@ -79,18 +88,21 @@ npm install
 #### **3. Run the Project**
 
 **Terminal 1 - Start Backend Server:**
+
 ```bash
 cd backend
 npm run dev
 ```
 
 **Terminal 2 - Start Frontend Development Server:**
+
 ```bash
 cd frontend
 npm run dev
 ```
 
 ### **Access the Application**
+
 - **Frontend:** http://localhost:5173
 - **Backend API:** http://localhost:5000
 
