@@ -49,9 +49,49 @@ https://github.com/user-attachments/assets/e9fce412-48b3-45ea-b436-9f31a92fc7ca
 
 ---
 
-## **Future Improvements**
-- Search students
-- Edit/Delete functionality
-- Pagination
-- Filters by course
-- Real photo upload + cropping
+## **How to Run This Project**
+
+### **Clone the Repository**
+```bash
+git clone https://github.com/amantech7/Student-form-webapp.git
+cd Student-form-webapp
+```
+
+### **Prerequisites**
+- Node.js (v14 or higher)
+- npm or yarn
+- MySQL Server
+
+### **Setup Instructions**
+
+#### **1. Install Backend Dependencies**
+```bash
+cd backend
+npm install
+```
+
+#### **2. Install Frontend Dependencies**
+```bash
+cd frontend
+npm install
+```
+
+#### **3. Run the Project**
+
+**Terminal 1 - Start Backend Server:**
+```bash
+cd backend
+npm run dev
+```
+
+**Terminal 2 - Start Frontend Development Server:**
+```bash
+cd frontend
+npm run dev
+```
+
+### **Access the Application**
+- **Frontend:** http://localhost:5173
+- **Backend API:** http://localhost:5000
+
+---
