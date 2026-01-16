@@ -1,11 +1,9 @@
 export async function fetchStudents() {
   const res = await fetch("http://localhost:5000/api/students");
   const json = await res.json();
-
   if (!res.ok || json?.success === false) {
     throw new Error(json?.message || "Failed to fetch students");
   }
-
   const rows = Array.isArray(json?.data) ? json.data : [];
   return rows.map((s) => ({
     id: s.id ?? s.student_id,
@@ -16,5 +14,6 @@ export async function fetchStudents() {
     phone: s.phone,
     course: s.course,
     avatar: s.avatar_url ?? null,
+    createdAt: s.created_at,
   }));
 }

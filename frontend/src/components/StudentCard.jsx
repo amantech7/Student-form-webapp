@@ -1,4 +1,4 @@
-export default function StudentCard({ student }) {
+export default function StudentCard({ student, onClick }) {
   const {
     firstName,
     middleName,
@@ -15,7 +15,10 @@ export default function StudentCard({ student }) {
   const avatarURL = avatar ? avatar : null;
 
   return (
-    <div className="bg-white rounded-lg p-4 shadow flex gap-3">
+    <div 
+      className="bg-white rounded-lg p-4 shadow flex gap-3 cursor-pointer hover:bg-gray-50"
+      onClick={onClick}
+    >
       
       {/* Avatar */}
       {avatarURL ? (
