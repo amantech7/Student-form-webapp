@@ -3,8 +3,8 @@ import db from "../config/db.js";
 export function insertStudent(student, callback) {
   const sql = `
     INSERT INTO students (
-      first_name, middle_name, last_name, dob, phone, course, avatar_url
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+      first_name, middle_name, last_name, dob, phone, email, course, avatar_url
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   db.query(
@@ -15,6 +15,7 @@ export function insertStudent(student, callback) {
       student.last_name,
       student.dob,
       student.phone,
+      student.email,
       student.course,
       student.avatar_url 
     ],
@@ -23,7 +24,7 @@ export function insertStudent(student, callback) {
 }
 
 export function getAllStudents(callback) {
-  db.query("SELECT * FROM students ORDER BY created_at DESC", callback);
+  db.query("SELECT * FROM students ORDER BY id DESC", callback);
 }
 
 export function getStudentCount(callback) {

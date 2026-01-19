@@ -5,6 +5,7 @@ export default function StudentCard({ student, onClick }) {
     lastName,
     dob,
     phone,
+    email,
     course,
     avatar,
   } = student;
@@ -44,6 +45,7 @@ export default function StudentCard({ student, onClick }) {
         <div className="mt-2 text-sm text-gray-600 space-y-1">
           <p>DOB: {dob || "Not Provided"}</p>
           <p>Phone: {phone || "Not Provided"}</p>
+          <p>Email: {email || "Not Provided"}</p>
         </div>
       </div>
     </div>

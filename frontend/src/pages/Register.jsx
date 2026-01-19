@@ -22,9 +22,9 @@ export default function Register() {
 
       {/* Form Card - same style as the table card in home */}
       <div className="max-w-6xl mx-auto px-4">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-2">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
+          <div className="mb-2">
+            <div className="flex items-center gap-1 ">
               <div className="bg-purple-100 text-purple-700 w-10 h-10 rounded-full flex items-center justify-center text-xl">
                 🎓
               </div>

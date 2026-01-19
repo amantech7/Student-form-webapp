@@ -10,7 +10,7 @@ import axios from "axios";
 
 export const registerStudent = async (req, res) => {
   try {
-    const { first_name, middle_name, last_name, dob, phone, course } = req.body;
+    const { first_name, middle_name, last_name, dob, phone, email, course } = req.body;
 
     // Generate DiceBear URL
     const seed = first_name + last_name + phone;
@@ -29,6 +29,7 @@ export const registerStudent = async (req, res) => {
       last_name,
       dob: dob || null,
       phone,
+      email: email || null,
       course: course || null,
       avatar_url: avatarBuffer,
     };
@@ -36,7 +37,9 @@ export const registerStudent = async (req, res) => {
     insertStudent(studentData, (err, result) => {
       if (err) {
         console.error("Insert error:", err);
-        return failure(res, "Database Insert Failed");
+        console.error("Error details:", err.message);
+        console.error("Error code:", err.code);
+        return failure(res, err.message || "Database Insert Failed");
       }
 
       return success(res, "Student Registered Successfully", {
@@ -60,13 +63,27 @@ export const fetchStudentCount = (req, res) => {
 
 export const fetchStudents = (req, res) => {
   getAllStudents((err, results) => {
-    if (err) return failure(res, "Failed to fetch students");
+    if (err) {
+      console.error("Database error in fetchStudents:", err);
+      return failure(res, "Failed to fetch students");
+    }
 
-    const toText = (v) => (Buffer.isBuffer(v) ? v.toString("utf8") : v);
+    if (!results || !Array.isArray(results)) {
+      return success(res, "Students fetched", []);
+    }
+
+    const toText = (v) => {
+      if (v === null || v === undefined) return null;
+      if (Buffer.isBuffer(v)) {
+        const str = v.toString("utf8");
+        return str.length > 0 ? str : null;
+      }
+      return String(v);
+    };
+    
     const blobToDataUrl = (buf) => {
       if (!Buffer.isBuffer(buf)) return null;
 
-      // Some older rows might contain SVG; detect and set the right MIME type.
       const head = buf.subarray(0, 32).toString("utf8").trimStart();
       const isSvg = head.startsWith("<svg") || head.startsWith("<?xml");
       const mime = isSvg ? "image/svg+xml" : "image/png";
@@ -82,23 +99,29 @@ export const fetchStudents = (req, res) => {
     };
 
     const formatted = results.map((s) => {
-      const avatar = s.avatar_url;
+      try {
+        const avatar = s.avatar_url;
+        const avatar_url = Buffer.isBuffer(avatar)
+          ? blobToDataUrl(avatar)
+          : toText(avatar) ?? null;
 
-      const avatar_url = Buffer.isBuffer(avatar)
-        ? blobToDataUrl(avatar)
-        : toText(avatar) ?? null;
-
-      return {
-        ...s,
-        first_name: toText(s.first_name),
-        middle_name: toText(s.middle_name),
-        last_name: toText(s.last_name),
-        phone: toText(s.phone),
-        course: toText(s.course),
-        dob: toYmd(s.dob),
-        avatar_url,
-      };
-    });
+        return {
+          id: s.id,
+          first_name: toText(s.first_name),
+          middle_name: toText(s.middle_name),
+          last_name: toText(s.last_name),
+          phone: toText(s.phone),
+          email: toText(s.email),
+          course: toText(s.course),
+          dob: toYmd(s.dob),
+          avatar_url,
+          created_at: s.created_at,
+        };
+      } catch (error) {
+        console.error("Error formatting student:", error, s);
+        return null;
+      }
+    }).filter(s => s !== null);
 
     return success(res, "Students fetched", formatted);
   });
@@ -116,11 +139,18 @@ export const fetchStudentById = (req, res) => {
 
     const s = result[0];
 
-    const toText = (v) => (Buffer.isBuffer(v) ? v.toString("utf8") : v);
+    const toText = (v) => {
+      if (v === null || v === undefined) return null;
+      if (Buffer.isBuffer(v)) {
+        const str = v.toString("utf8");
+        return str.length > 0 ? str : null;
+      }
+      return String(v);
+    };
+    
     const blobToDataUrl = (buf) => {
       if (!Buffer.isBuffer(buf)) return null;
 
-      // Some older rows might contain SVG; detect and set the right MIME type.
       const head = buf.subarray(0, 32).toString("utf8").trimStart();
       const isSvg = head.startsWith("<svg") || head.startsWith("<?xml");
       const mime = isSvg ? "image/svg+xml" : "image/png";
@@ -141,14 +171,16 @@ export const fetchStudentById = (req, res) => {
       : toText(avatar) ?? null;
 
     const formatted = {
-      ...s,
+      id: s.id,
       first_name: toText(s.first_name),
       middle_name: toText(s.middle_name),
       last_name: toText(s.last_name),
       phone: toText(s.phone),
+      email: toText(s.email),
       course: toText(s.course),
       dob: toYmd(s.dob),
       avatar_url,
+      created_at: s.created_at,
     };
 
     return success(res, "Student fetched", formatted);

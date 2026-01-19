@@ -6,6 +6,7 @@ export default function StudentForm({ onRegister }) {
   const [lastName, setLastName] = useState("");
   const [dob, setDob] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [course, setCourse] = useState("");
   const [file, setFile] = useState(null);
 
@@ -59,6 +60,14 @@ export default function StudentForm({ onRegister }) {
       }
     }
 
+    if (email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address");
+        return false;
+      }
+    }
+
     // Course: required
     if (!course) {
       alert("Please select a Desired Course");
@@ -91,6 +100,7 @@ export default function StudentForm({ onRegister }) {
     formData.append("last_name", lastName);
     formData.append("dob", dob);
     formData.append("phone", phone);
+    formData.append("email", email);
     formData.append("course", course);
     if (file) formData.append("photo", file);
 
@@ -111,6 +121,7 @@ export default function StudentForm({ onRegister }) {
       setLastName("");
       setDob("");
       setPhone("");
+      setEmail("");
       setCourse("");
       setFile(null);
     } catch (err) {
@@ -123,7 +134,7 @@ export default function StudentForm({ onRegister }) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* First Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 ">
           First Name*
         </label>
         <input
@@ -138,7 +149,7 @@ export default function StudentForm({ onRegister }) {
 
       {/* Middle Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 ">
           Middle Name
         </label>
         <input
@@ -152,7 +163,7 @@ export default function StudentForm({ onRegister }) {
 
       {/* Last Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 ">
           Last Name*
         </label>
         <input
@@ -167,7 +178,7 @@ export default function StudentForm({ onRegister }) {
 
       {/* DOB */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 ">
           Date of Birth
         </label>
         <input
@@ -180,7 +191,7 @@ export default function StudentForm({ onRegister }) {
 
       {/* Phone */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 ">
           Phone Number
         </label>
         <input
@@ -193,9 +204,23 @@ export default function StudentForm({ onRegister }) {
         />
       </div>
 
+      {/* Email */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 ">
+          Email
+        </label>
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+        />
+      </div>
+
       {/* Course */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 ">
           Desired Course
         </label>
         <select
@@ -214,7 +239,7 @@ export default function StudentForm({ onRegister }) {
 
       {/* File Upload */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 ">
           Upload Profile
         </label>
         <input

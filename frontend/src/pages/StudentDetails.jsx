@@ -74,6 +74,11 @@ export default function StudentDetails() {
             </div>
 
             <div className="flex items-center gap-2 text-sm">
+              <span className="text-blue-600">📧</span>
+              <span className="text-gray-700">{student.email || 'Not Provided'}</span>
+            </div>
+
+            <div className="flex items-center gap-2 text-sm">
               <span className="text-blue-600">📅</span>
               <span className="text-gray-700">{student.dob || 'Not Provided'}</span>
             </div>
