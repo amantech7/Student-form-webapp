@@ -10,21 +10,74 @@ export default function StudentForm({ onRegister }) {
   const [file, setFile] = useState(null);
 
   const validate = () => {
-    if (!firstName.trim() || !lastName.trim()) {
-      alert("First & Last Name Required");
+    // name validation regex
+    const nameRegex = /^[a-zA-Z\s\-']+$/;
+
+    
+    if (!firstName.trim() || firstName.trim().length < 2 || firstName.trim().length > 50 || !nameRegex.test(firstName)) {
+      alert("First Name is required, must be 2-50 characters, and contain only letters, spaces, hyphens, or apostrophes");
       return false;
     }
-    if (phone && (isNaN(phone) || phone.length !== 10)) {
-      alert("Enter valid 10-digit Phone Number");
+
+    
+    if (middleName && (middleName.length < 1 || middleName.length > 50 || !nameRegex.test(middleName))) {
+      alert("Middle Name, if provided, must be 1-50 characters and contain only letters, spaces, hyphens, or apostrophes");
       return false;
     }
+
+    // Last Name: required, 2-50 chars, valid chars
+    if (!lastName.trim() || lastName.trim().length < 2 || lastName.trim().length > 50 || !nameRegex.test(lastName)) {
+      alert("Last Name is required, must be 2-50 characters, and contain only letters, spaces, hyphens, or apostrophes");
+      return false;
+    }
+
+    // DOB validation
     if (dob) {
-      const birth = new Date(dob);
-      if (birth > new Date()) {
-        alert("Invalid DOB: Cannot be in the future");
+      const birthDate = new Date(dob);
+      const today = new Date();
+      if (isNaN(birthDate.getTime())) {
+        alert("Invalid Date of Birth");
+        return false;
+      }
+      if (birthDate > today) {
+        alert("Date of Birth cannot be in the future");
+        return false;
+      }
+      const age = today.getFullYear() - birthDate.getFullYear();
+      if (age < 5) {
+        alert("Student must be at least 5 years old");
         return false;
       }
     }
+
+    //phone no validation
+    if (phone) {
+      const phoneRegex = /^[6-9]\d{9}$/;
+      if (!phoneRegex.test(phone)) {
+        alert("Phone Number, if provided, must be exactly 10 digits and start with 6-9");
+        return false;
+      }
+    }
+
+    // Course: required
+    if (!course) {
+      alert("Please select a Desired Course");
+      return false;
+    }
+
+    // File validation
+    if (file) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+      if (!allowedTypes.includes(file.type)) {
+        alert("Profile photo must be JPEG, PNG, GIF, or WebP format");
+        return false;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        alert("Profile photo must be less than 2MB");
+        return false;
+      }
+    }
+
     return true;
   };
 

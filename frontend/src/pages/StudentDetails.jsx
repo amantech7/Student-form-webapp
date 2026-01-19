@@ -27,86 +27,78 @@ export default function StudentDetails() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Student Details</h1>
-          <Link
-            to="/"
-            className="text-gray-500 hover:text-gray-800 text-2xl font-medium"
-          >
-            ×
-          </Link>
-        </div>
+  const fullName = `${student.firstName || ''} ${student.middleName || ''} ${student.lastName || ''}`.trim() || 'Unknown Student';
 
-        {/* Details Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 max-w-2xl mx-auto">
-          <div className="text-center mb-8">
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-md p-4 max-w-lg w-full">
+    
+        <div className="flex items-start gap-4">
+      
+          <div className="flex flex-col items-center">
+            {/* Avatar */}
             {student.avatar ? (
               <img
                 src={student.avatar}
-                alt={`${student.firstName} ${student.lastName}`}
-                className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-purple-100 shadow-md"
+                alt={fullName}
+                className="w-24 h-24 rounded-full object-cover bg-gray-300"
               />
             ) : (
-              <div className="w-32 h-32 rounded-full mx-auto bg-gray-100 flex items-center justify-center text-gray-500 text-2xl font-bold shadow-md">
-                {student.firstName?.charAt(0) || "?"}
+              <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-2xl font-bold">
+                {student.firstName?.charAt(0) || '?'}
               </div>
             )}
-            <h2 className="mt-4 text-2xl font-bold text-gray-900">
-              {student.firstName} {student.middleName || ""} {student.lastName}
-            </h2>
-            <p className="text-sm text-gray-500 mt-1">Student ID: {student.id}</p>
+
+            <div className="flex gap-2 mt-2 text-2xl text-gray-500">
+              <span>🏅</span>
+              <span>🚀</span>
+              <span>🎯</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700">
-            <div>
-              <p className="text-sm font-medium text-gray-500">First Name</p>
-              <p className="mt-1 text-base">{student.firstName || "—"}</p>
+          {/* Right side info */}
+          <div className="space-y-1 flex-grow">
+            <h2 className="text-3xl font-bold text-gray-900">
+              {fullName}
+            </h2>
+
+            <div className="flex items-center gap-2 text-blue-600 text-sm">
+              <span>🏢</span>
+              <span>{student.course || 'Not Assigned'}</span>
             </div>
-            <div>
-              <p className="text-sm font-medium text-gray-500">Middle Name</p>
-              <p className="mt-1 text-base">{student.middleName || "—"}</p>
+
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-blue-600">📞</span>
+              <span className="text-gray-700">{student.phone || 'Not Provided'}</span>
+             
             </div>
-            <div>
-              <p className="text-sm font-medium text-gray-500">Last Name</p>
-              <p className="mt-1 text-base">{student.lastName || "—"}</p>
+
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-blue-600">📅</span>
+              <span className="text-gray-700">{student.dob || 'Not Provided'}</span>
             </div>
-            <div>
-              <p className="text-sm font-medium text-gray-500">DOB</p>
-              <p className="mt-1 text-base">{student.dob || "—"}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-500">Phone</p>
-              <p className="mt-1 text-base">{student.phone || "—"}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-500">Course</p>
-              <p className="mt-1 text-base">{student.course || "—"}</p>
-            </div>
-            <div className="md:col-span-2">
-              <p className="text-sm font-medium text-gray-500">Registered On</p>
-              <p className="mt-1 text-base">
-                {student.createdAt
+
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-blue-600">⏰</span>
+              <span className="text-gray-700">
+                {student.createdAt 
                   ? new Date(student.createdAt).toLocaleString("en-IN", {
                       dateStyle: "medium",
-                      timeStyle: "short",
+                      timeStyle: "short"
                     })
-                  : "—"}
-              </p>
+                  : 'Unknown'}
+              </span>
             </div>
           </div>
+        </div>
 
-          <div className="mt-10 text-center">
-            <Link
-              to="/"
-              className="inline-block px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium shadow-sm transition"
-            >
-              Back
-            </Link>
-          </div>
+        <div className="mt-6 text-right">
+          <Link
+            to="/"
+            className="inline-block px-6 py-2 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition"
+          >
+            Back
+          </Link>
         </div>
       </div>
     </div>
