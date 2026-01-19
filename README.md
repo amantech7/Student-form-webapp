@@ -48,9 +48,34 @@ A simple web application that allows registering students and viewing their deta
 
 ---
 
+
+## **ScreenShots:--**
+
+## Student Portal
+
+<img width="1231" height="939" alt="image" src="https://github.com/user-attachments/assets/a2a915d5-549c-4ed7-a024-1d9f44a6354d" />
+
+## Student Details
+
+<img width="1253" height="808" alt="image" src="https://github.com/user-attachments/assets/c3e7b912-29c4-45ce-8f3e-ae8b1cab26ca" />
+
+
+
+## Register Student
+
+<img width="1199" height="986" alt="image" src="https://github.com/user-attachments/assets/d60af9b1-45d2-4488-a196-03b2878cbc42" />
+
+## DataBase 
+
+<img width="818" height="546" alt="image" src="https://github.com/user-attachments/assets/2e0becd7-7f4f-4f26-accf-87bd79855d68" />
+
 ## **Demo**
 
-https://github.com/user-attachments/assets/e9fce412-48b3-45ea-b436-9f31a92fc7ca
+
+
+https://github.com/user-attachments/assets/74caa4ad-a3db-426d-9579-ba9491f4fb2c
+
+
 
 ---
 
