@@ -7,7 +7,7 @@ export default function StudentForm({ onRegister }) {
   const [dob, setDob] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [course, setCourse] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [file, setFile] = useState(null);
 
   const validate = () => {
@@ -68,9 +68,8 @@ export default function StudentForm({ onRegister }) {
       }
     }
 
-    // Course: required
-    if (!course) {
-      alert("Please select a Desired Course");
+    if (companyName && (companyName.length < 1 || companyName.length > 100)) {
+      alert("Company Name, must be 1-100 characters");
       return false;
     }
 
@@ -101,7 +100,7 @@ export default function StudentForm({ onRegister }) {
     formData.append("dob", dob);
     formData.append("phone", phone);
     formData.append("email", email);
-    formData.append("course", course);
+    formData.append("company_name", companyName);
     if (file) formData.append("photo", file);
 
     try {
@@ -122,7 +121,7 @@ export default function StudentForm({ onRegister }) {
       setDob("");
       setPhone("");
       setEmail("");
-      setCourse("");
+      setCompanyName("");
       setFile(null);
     } catch (err) {
       console.error(err);
@@ -218,23 +217,18 @@ export default function StudentForm({ onRegister }) {
         />
       </div>
 
-      {/* Course */}
-      <div>
+     <div>
         <label className="block text-sm font-medium text-gray-700 ">
-          Desired Course
+          Company Name
         </label>
-        <select
-          value={course}
-          onChange={(e) => setCourse(e.target.value)}
-          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white"
-        >
-          <option value="">-- Select Course --</option>
-          <option value="Computer Science">Computer Science</option>
-          <option value="Commerce">Commerce</option>
-          <option value="Medical">Medical</option>
-          <option value="Arts">Arts</option>
-          <option value="Diploma">Diploma</option>
-        </select>
+        <input
+          type="text"
+          placeholder="Enter Company Name"
+          value={companyName}
+          onChange={(e) => setCompanyName(e.target.value)}
+          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+          maxLength={100}
+        />
       </div>
 
       {/* File Upload */}

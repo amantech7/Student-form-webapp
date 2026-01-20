@@ -10,7 +10,7 @@ import axios from "axios";
 
 export const registerStudent = async (req, res) => {
   try {
-    const { first_name, middle_name, last_name, dob, phone, email, course } = req.body;
+    const { first_name, middle_name, last_name, dob, phone, email, company_name } = req.body;
 
     // Generate DiceBear URL
     const seed = first_name + last_name + phone;
@@ -30,7 +30,7 @@ export const registerStudent = async (req, res) => {
       dob: dob || null,
       phone,
       email: email || null,
-      course: course || null,
+      company_name: company_name || null,
       avatar_url: avatarBuffer,
     };
 
@@ -112,7 +112,7 @@ export const fetchStudents = (req, res) => {
           last_name: toText(s.last_name),
           phone: toText(s.phone),
           email: toText(s.email),
-          course: toText(s.course),
+          company_name: toText(s.company_name),
           dob: toYmd(s.dob),
           avatar_url,
           created_at: s.created_at,
@@ -177,7 +177,7 @@ export const fetchStudentById = (req, res) => {
       last_name: toText(s.last_name),
       phone: toText(s.phone),
       email: toText(s.email),
-      course: toText(s.course),
+      company_name: toText(s.company_name),
       dob: toYmd(s.dob),
       avatar_url,
       created_at: s.created_at,

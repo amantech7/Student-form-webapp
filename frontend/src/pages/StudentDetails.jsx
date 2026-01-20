@@ -64,7 +64,7 @@ export default function StudentDetails() {
 
             <div className="flex items-center gap-2 text-blue-600 text-sm">
               <span>🏢</span>
-              <span>{student.course || 'Not Assigned'}</span>
+              <span>{student.companyName || 'Not Assigned'}</span>
             </div>
 
             <div className="flex items-center gap-2 text-sm">

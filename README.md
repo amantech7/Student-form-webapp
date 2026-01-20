@@ -53,28 +53,22 @@ A simple web application that allows registering students and viewing their deta
 
 ## Student Portal
 
-<img width="1231" height="939" alt="image" src="https://github.com/user-attachments/assets/a2a915d5-549c-4ed7-a024-1d9f44a6354d" />
+<img width="1281" height="836" alt="image" src="https://github.com/user-attachments/assets/03fd3314-d0c9-403c-87b4-539f2f57ea34" />
+
 
 ## Student Details
 
-<img width="1253" height="808" alt="image" src="https://github.com/user-attachments/assets/c3e7b912-29c4-45ce-8f3e-ae8b1cab26ca" />
+<img width="1207" height="797" alt="image" src="https://github.com/user-attachments/assets/5d93136e-24bf-4111-ad2d-6912e956a77a" />
 
 
 
 ## Register Student
 
-<img width="1199" height="986" alt="image" src="https://github.com/user-attachments/assets/d60af9b1-45d2-4488-a196-03b2878cbc42" />
+<img width="1207" height="993" alt="image" src="https://github.com/user-attachments/assets/d512b46d-b2e2-4e45-be11-fcab993b45ab" />
 
 ## DataBase 
 
-<img width="818" height="546" alt="image" src="https://github.com/user-attachments/assets/2e0becd7-7f4f-4f26-accf-87bd79855d68" />
-
-## **Demo**
-
-
-
-https://github.com/user-attachments/assets/74caa4ad-a3db-426d-9579-ba9491f4fb2c
-
+<img width="907" height="519" alt="image" src="https://github.com/user-attachments/assets/f3914218-7929-4f4d-921f-1f84a241f07e" />
 
 
 ---

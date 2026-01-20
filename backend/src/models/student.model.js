@@ -3,7 +3,7 @@ import db from "../config/db.js";
 export function insertStudent(student, callback) {
   const sql = `
     INSERT INTO students (
-      first_name, middle_name, last_name, dob, phone, email, course, avatar_url
+      first_name, middle_name, last_name, dob, phone, email,company_name, avatar_url
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
@@ -16,7 +16,7 @@ export function insertStudent(student, callback) {
       student.dob,
       student.phone,
       student.email,
-      student.course,
+     student.company_name,
       student.avatar_url 
     ],
     callback

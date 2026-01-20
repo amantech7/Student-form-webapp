@@ -13,7 +13,7 @@ export async function fetchStudents() {
     dob: s.dob,
     phone: s.phone,
     email: s.email,
-    course: s.course,
+    companyName: s.company_name,
     avatar: s.avatar_url ?? null,
     createdAt: s.created_at,
   }));
@@ -34,7 +34,7 @@ export async function fetchStudentById(id) {
     dob: s.dob,
     phone: s.phone,
     email: s.email,
-    course: s.course,
+    companyName: s.company_name,
     avatar: s.avatar_url,
     createdAt: s.created_at,
   };

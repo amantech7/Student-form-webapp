@@ -47,7 +47,7 @@ export default function Home() {
                   <th className="px-4 py-3 text-left">Last Name</th>
                   <th className="px-4 py-3 text-left">DOB</th>
                   <th className="px-4 py-3 text-left">Phone</th>
-                  <th className="px-4 py-3 text-left">Course</th>
+                  <th className="px-4 py-3 text-left">Company</th>
                   <th className="px-4 py-3 text-left">Created</th>
                   <th className="px-4 py-3 text-center">Actions</th>
                 </tr>
@@ -67,7 +67,7 @@ export default function Home() {
                       <td className="px-4 py-3 text-gray-600">{s.lastName || '-'}</td>
                       <td className="px-4 py-3 text-gray-600">{s.dob || '-'}</td>
                       <td className="px-4 py-3 text-gray-600">{s.phone || '-'}</td>
-                      <td className="px-4 py-3 text-gray-600">{s.course || '-'}</td>
+                      <td className="px-4 py-3 text-gray-600">{s.companyName || '-'}</td>
                       <td className="px-4 py-3 text-gray-600">
                         {s.createdAt ? new Date(s.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: '2-digit' }) : '-'}
                       </td>

@@ -35,7 +35,7 @@ db.connect((err) => {
       dob DATE,
       phone VARCHAR(20),
       email VARCHAR(255),
-      course VARCHAR(100),
+      company_name VARCHAR(255),
       avatar_url MEDIUMBLOB,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
